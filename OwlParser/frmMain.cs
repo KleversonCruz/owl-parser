@@ -32,44 +32,67 @@ namespace OwlParser
                 var ConteudoArquivo = Encoding.UTF8.GetString(File.ReadAllBytes(openFileDialog1.FileName));
                 document = parser.LoadDocument<Ontology>(ConteudoArquivo);
 
-                populateComboBox(document.Declaration);
+                PopulateComboBox(document.Declaration);
             }
         }
 
         private void btnSelectClass_Click(object sender, EventArgs e)
         {
             string selectedClass = cbxClasses.SelectedItem?.ToString();
-            var documentList = document.EquivalentClasses.ToList();
-
             if (!string.IsNullOrEmpty(selectedClass))
             {
-                txtResult.Clear();
-
-                var equivalentClasses = documentList.Where(x => x.Class.IRI == selectedClass);
-                foreach (var equivalentClass in equivalentClasses)
-                {
-                    txtResult.AppendText($"{equivalentClass.Class.IRI} --> ");
-                    if (equivalentClass.ObjectSomeValuesFrom != null)
-                    {
-                        txtResult.AppendText($"{equivalentClass.ObjectSomeValuesFrom.ObjectProperty.IRI} --> ");
-                        txtResult.AppendText($"{equivalentClass.ObjectSomeValuesFrom.Class.IRI}");
-
-                    }
-                    if (equivalentClass.ObjectIntersectionOf != null)
-                    {
-
-                        txtResult.AppendText($"{equivalentClass.ObjectIntersectionOf.First().ObjectProperty.IRI} --> ");
-                        foreach (var item in equivalentClass.ObjectIntersectionOf)
-                        {
-                            txtResult.AppendText($"{item.Class.IRI}/");
-                        }
-                    }
-                    txtResult.AppendText(Environment.NewLine);
-                }
+                GenerateResultTree(selectedClass);
             }
         }
 
-        private void populateComboBox(OntologyDeclaration[] ontologyDeclarations)
+        private void GenerateResultTree(string selectedClass)
+        {
+            txtResult.Clear();
+            List<string> subClassNamesList = new();
+
+            var equivalentClasses = document.EquivalentClasses.ToList().Where(x => x.Class.IRI == selectedClass);
+
+            foreach (var equivalentClass in equivalentClasses)
+            {
+                txtResult.AppendText($"{equivalentClass.Class.IRI} --> ");
+                var subclassNames = GenerateObjectValues(equivalentClass.ObjectSomeValuesFrom, equivalentClass.ObjectIntersectionOf);
+                subClassNamesList.AddRange(subclassNames);
+            }
+
+            foreach (var name in subClassNamesList)
+            {
+                var subClasses = document.SubClassOf.ToList().Where(x => x.Class.First().IRI == name && x.ObjectSomeValuesFrom != null).First();
+                txtResult.AppendText($"{name} --> ");
+                GenerateObjectValues(subClasses.ObjectSomeValuesFrom, subClasses.ObjectIntersectionOf);
+            }
+        }
+
+        private List<string> GenerateObjectValues(OntologyObjectSomeValues objectSomeValue, OntologyObjectSomeValues[] objectIntersectionOf)
+        {
+            List<string> subClassNames = new();
+
+            if (objectSomeValue != null)
+            {
+                txtResult.AppendText($"{objectSomeValue.ObjectProperty.IRI} --> ");
+                txtResult.AppendText($"{objectSomeValue.Class.IRI}");
+                subClassNames.Add(objectSomeValue.Class.IRI);
+            }
+            
+            if (objectIntersectionOf != null)
+            {
+                txtResult.AppendText($"{objectIntersectionOf.First().ObjectProperty.IRI} --> ");
+                foreach (var item in objectIntersectionOf)
+                {
+                    txtResult.AppendText($"{item.Class.IRI}/");
+                    subClassNames.Add(item.Class.IRI);
+                }
+            }
+            txtResult.AppendText(Environment.NewLine);
+
+            return subClassNames;
+        }
+
+        private void PopulateComboBox(OntologyDeclaration[] ontologyDeclarations)
         {
             cbxClasses.Items.Clear();
             foreach (var declaration in ontologyDeclarations)

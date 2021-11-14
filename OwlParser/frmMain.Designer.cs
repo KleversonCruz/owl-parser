@@ -76,7 +76,7 @@ namespace OwlParser
             // 
             this.cbxClasses.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbxClasses.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cbxClasses.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.cbxClasses.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbxClasses.BackColor = System.Drawing.Color.White;
             this.cbxClasses.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);

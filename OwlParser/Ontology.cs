@@ -12,11 +12,12 @@ namespace OwlParser
         [XmlElement("Declaration")]
         public OntologyDeclaration[] Declaration { get; set; }
 
-
         [XmlElement("EquivalentClasses")]
         public OntologyEquivalentClasses[] EquivalentClasses { get; set; }
-    }
 
+        [XmlElement("SubClassOf")]
+        public OntologySubClassOf[] SubClassOf { get; set; }
+    }
 
     [Serializable()]
     [System.ComponentModel.DesignerCategory("code")]
@@ -25,7 +26,6 @@ namespace OwlParser
     {
         public OntologyDeclarationClass Class { get; set; }
     }
-
 
     [Serializable()]
     [System.ComponentModel.DesignerCategory("code")]
@@ -36,94 +36,48 @@ namespace OwlParser
         public string IRI { get; set; }
     }
 
-
     [Serializable()]
     [System.ComponentModel.DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "http://www.w3.org/2002/07/owl#")]
     public partial class OntologyEquivalentClasses
     {
-        public OntologyEquivalentClassesClass Class { get; set; }
+        public OntologyDeclarationClass Class { get; set; }
 
-
-        public OntologyEquivalentClassesObjectSomeValuesFrom ObjectSomeValuesFrom { get; set; }
-
+        public OntologyObjectSomeValues ObjectSomeValuesFrom { get; set; }
 
         [XmlArrayItem("ObjectSomeValuesFrom", IsNullable = false)]
-        public OntologyEquivalentClassesObjectSomeValuesFrom1[] ObjectIntersectionOf { get; set; }
+        public OntologyObjectSomeValues[] ObjectIntersectionOf { get; set; }
     }
-
 
     [Serializable()]
     [System.ComponentModel.DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "http://www.w3.org/2002/07/owl#")]
-    public partial class OntologyEquivalentClassesClass
+    public partial class OntologyObjectSomeValues
+    {
+        public OntologyObjectProperty ObjectProperty { get; set; }
+
+        public OntologyDeclarationClass Class { get; set; }
+    }
+
+    [Serializable()]
+    [System.ComponentModel.DesignerCategory("code")]
+    [XmlType(AnonymousType = true, Namespace = "http://www.w3.org/2002/07/owl#")]
+    public partial class OntologyObjectProperty
     {
         [XmlAttribute()]
         public string IRI { get; set; }
     }
 
-
     [Serializable()]
     [System.ComponentModel.DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "http://www.w3.org/2002/07/owl#")]
-    public partial class OntologyEquivalentClassesObjectSomeValuesFrom
+    public partial class OntologySubClassOf
     {
-        public OntologyEquivalentClassesObjectSomeValuesFromObjectProperty ObjectProperty { get; set; }
+        [XmlElement("Class")]
+        public OntologyDeclarationClass[] Class { get; set; }
 
-        public OntologyEquivalentClassesObjectSomeValuesFromClass Class { get; set; }
+        [XmlArrayItem("ObjectSomeValuesFrom", IsNullable = false)]
+        public OntologyObjectSomeValues[] ObjectIntersectionOf { get; set; }
+        public OntologyObjectSomeValues ObjectSomeValuesFrom { get; set; }
     }
-
-
-    [Serializable()]
-    [System.ComponentModel.DesignerCategory("code")]
-    [XmlType(AnonymousType = true, Namespace = "http://www.w3.org/2002/07/owl#")]
-    public partial class OntologyEquivalentClassesObjectSomeValuesFromObjectProperty
-    {
-        [XmlAttribute()]
-        public string IRI { get; set; }
-    }
-
-
-    [Serializable()]
-    [System.ComponentModel.DesignerCategory("code")]
-    [XmlType(AnonymousType = true, Namespace = "http://www.w3.org/2002/07/owl#")]
-    public partial class OntologyEquivalentClassesObjectSomeValuesFromClass
-    {
-        [XmlAttribute()]
-        public string IRI { get; set; }
-    }
-
-
-    [Serializable()]
-    [System.ComponentModel.DesignerCategory("code")]
-    [XmlType(AnonymousType = true, Namespace = "http://www.w3.org/2002/07/owl#")]
-    public partial class OntologyEquivalentClassesObjectSomeValuesFrom1
-    {
-        public OntologyEquivalentClassesObjectSomeValuesFromObjectProperty1 ObjectProperty { get; set; }
-
-
-        public OntologyEquivalentClassesObjectSomeValuesFromClass1 Class { get; set; }
-    }
-
-
-    [Serializable()]
-    [System.ComponentModel.DesignerCategory("code")]
-    [XmlType(AnonymousType = true, Namespace = "http://www.w3.org/2002/07/owl#")]
-    public partial class OntologyEquivalentClassesObjectSomeValuesFromObjectProperty1
-    {
-        [XmlAttribute()]
-        public string IRI { get; set; }
-    }
-
-
-    [Serializable()]
-    [System.ComponentModel.DesignerCategory("code")]
-    [XmlType(AnonymousType = true, Namespace = "http://www.w3.org/2002/07/owl#")]
-    public partial class OntologyEquivalentClassesObjectSomeValuesFromClass1
-    {
-        [XmlAttribute()]
-        public string IRI { get; set; }
-    }
-
-
 }
