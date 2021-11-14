@@ -41,11 +41,11 @@ namespace OwlParser
             string selectedClass = cbxClasses.SelectedItem?.ToString();
             if (!string.IsNullOrEmpty(selectedClass))
             {
-                GenerateResultTree(selectedClass);
+                GetClassObject(selectedClass);
             }
         }
 
-        private void GenerateResultTree(string selectedClass)
+        private void GetClassObject(string selectedClass)
         {
             txtResult.Clear();
             List<string> subClassNamesList = new();
@@ -55,7 +55,7 @@ namespace OwlParser
             foreach (var equivalentClass in equivalentClasses)
             {
                 txtResult.AppendText($"{equivalentClass.Class.IRI} --> ");
-                var subclassNames = GenerateObjectValues(equivalentClass.ObjectSomeValuesFrom, equivalentClass.ObjectIntersectionOf);
+                var subclassNames = GetObjectValues(equivalentClass.ObjectSomeValuesFrom, equivalentClass.ObjectIntersectionOf);
                 subClassNamesList.AddRange(subclassNames);
             }
 
@@ -63,11 +63,11 @@ namespace OwlParser
             {
                 var subClasses = document.SubClassOf.ToList().Where(x => x.Class.First().IRI == name && x.ObjectSomeValuesFrom != null).First();
                 txtResult.AppendText($"{name} --> ");
-                GenerateObjectValues(subClasses.ObjectSomeValuesFrom, subClasses.ObjectIntersectionOf);
+                GetObjectValues(subClasses.ObjectSomeValuesFrom, subClasses.ObjectIntersectionOf);
             }
         }
 
-        private List<string> GenerateObjectValues(OntologyObjectSomeValues objectSomeValue, OntologyObjectSomeValues[] objectIntersectionOf)
+        private List<string> GetObjectValues(OntologyObjectSomeValues objectSomeValue, OntologyObjectSomeValues[] objectIntersectionOf)
         {
             List<string> subClassNames = new();
 
