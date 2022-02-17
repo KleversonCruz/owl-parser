@@ -1,18 +1,20 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 using System.Xml.Serialization;
 
-namespace OwlParser
+namespace OwlParser.Scripts
 {
-    public class Parser
+    public class LoadOwlFile
     {
-        public T LoadDocument<T>(string arquivo) where T : class
+        public static T LoadDocument<T>(string pathFile) where T : class
         {
+            var fileContent = Encoding.UTF8.GetString(File.ReadAllBytes(pathFile));
             var serialize = new XmlSerializer(typeof(T));
             try
             {
                 //var xmlArquivo = System.Xml.XmlReader.Create(arquivo);
-                using (TextReader reader = new StringReader(arquivo))
+                using (TextReader reader = new StringReader(fileContent))
                 {
                     return (T)serialize.Deserialize(reader);
                 }

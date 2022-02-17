@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Serialization;
 
-namespace OwlParser
+namespace OwlParser.Models
 {
     [Serializable()]
     [System.ComponentModel.DesignerCategory("code")]
@@ -17,6 +19,29 @@ namespace OwlParser
 
         [XmlElement("SubClassOf")]
         public OntologySubClassOf[] SubClassOf { get; set; }
+
+        public IEnumerable<OntologyEquivalentClasses> GetEquivalentClassesList(string className)
+        {
+            return this.EquivalentClasses.ToList().Where(x => x.Class.IRI == className);
+        }
+
+        public string[] GetDeclarationNames()
+        {
+            List<string> nameList = new();
+            foreach (var declaration in Declaration)
+            {
+                if (declaration.Class != null)
+                {
+                    nameList.Add(declaration.Class.IRI);
+                }
+            }
+            return nameList.ToArray();
+        }
+
+        public OntologySubClassOf GetSubClassByName(string name)
+        {
+            return SubClassOf.ToList().Where(x => x.Class.First().IRI == name && x.ObjectSomeValuesFrom != null).First();
+        }
     }
 
     [Serializable()]
@@ -47,6 +72,26 @@ namespace OwlParser
 
         [XmlArrayItem("ObjectSomeValuesFrom", IsNullable = false)]
         public OntologyObjectSomeValues[] ObjectIntersectionOf { get; set; }
+
+        public string[] GetChildrenNames()
+        {
+            List<string> nameList = new();
+
+            if (ObjectSomeValuesFrom != null)
+            {
+                nameList.Add(ObjectSomeValuesFrom.Class.IRI);
+            }
+
+            if (ObjectIntersectionOf != null)
+            {
+                foreach (var item in ObjectIntersectionOf)
+                {
+                    nameList.Add(item.Class.IRI);
+                }
+            }
+
+            return nameList.ToArray();
+        }
     }
 
     [Serializable()]
@@ -79,5 +124,27 @@ namespace OwlParser
         [XmlArrayItem("ObjectSomeValuesFrom", IsNullable = false)]
         public OntologyObjectSomeValues[] ObjectIntersectionOf { get; set; }
         public OntologyObjectSomeValues ObjectSomeValuesFrom { get; set; }
+
+        public string[] GetChildrenNames()
+        {
+            List<string> nameList = new();
+
+            if (ObjectSomeValuesFrom != null)
+            {
+                nameList.Add(ObjectSomeValuesFrom.Class.IRI);
+            }
+
+            if (ObjectIntersectionOf != null)
+            {
+                foreach (var item in ObjectIntersectionOf)
+                {
+                    nameList.Add(item.Class.IRI);
+                }
+            }
+
+            return nameList.ToArray();
+        }
+
     }
+
 }

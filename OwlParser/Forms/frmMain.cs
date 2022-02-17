@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
+using OwlParser.Models;
+using OwlParser.Scripts;
 
 namespace OwlParser
 {
@@ -20,19 +22,14 @@ namespace OwlParser
             InitializeComponent();
         }
 
-        Ontology document = new();
+        Ontology ontology = new();
         private void btnOpenFile_Click(object sender, EventArgs e)
         {
-            Parser parser = new Parser();
-
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 textBox1.Text = openFileDialog1.FileName;
-
-                var ConteudoArquivo = Encoding.UTF8.GetString(File.ReadAllBytes(openFileDialog1.FileName));
-                document = parser.LoadDocument<Ontology>(ConteudoArquivo);
-
-                PopulateComboBox(document.Declaration);
+                ontology = LoadOwlFile.LoadDocument<Ontology>(openFileDialog1.FileName);
+                cbxClasses.Items.AddRange(ontology.GetDeclarationNames());
             }
         }
 
@@ -41,16 +38,16 @@ namespace OwlParser
             string selectedClass = cbxClasses.SelectedItem?.ToString();
             if (!string.IsNullOrEmpty(selectedClass))
             {
-                GetClassObject(selectedClass);
+                GetClassTree(selectedClass);
             }
         }
 
-        private void GetClassObject(string selectedClass)
+        private void GetClassTree(string selectedClass)
         {
             txtResult.Clear();
             List<string> subClassNamesList = new();
 
-            var equivalentClasses = document.EquivalentClasses.ToList().Where(x => x.Class.IRI == selectedClass);
+            var equivalentClasses = ontology.GetEquivalentClassesList(selectedClass);
 
             foreach (var equivalentClass in equivalentClasses)
             {
@@ -61,9 +58,9 @@ namespace OwlParser
 
             foreach (var name in subClassNamesList)
             {
-                var subClasses = document.SubClassOf.ToList().Where(x => x.Class.First().IRI == name && x.ObjectSomeValuesFrom != null).First();
+                var subClass = ontology.GetSubClassByName(name);
                 txtResult.AppendText($"{name} --> ");
-                GetObjectValues(subClasses.ObjectSomeValuesFrom, subClasses.ObjectIntersectionOf);
+                GetObjectValues(subClass.ObjectSomeValuesFrom, subClass.ObjectIntersectionOf);
             }
         }
 
@@ -92,16 +89,5 @@ namespace OwlParser
             return subClassNames;
         }
 
-        private void PopulateComboBox(OntologyDeclaration[] ontologyDeclarations)
-        {
-            cbxClasses.Items.Clear();
-            foreach (var declaration in ontologyDeclarations)
-            {
-                if (declaration.Class != null)
-                {
-                    cbxClasses.Items.Add(declaration.Class.IRI);
-                }
-            }
-        }
     }
 }
