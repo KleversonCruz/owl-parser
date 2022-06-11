@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE Ontology [
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY xml "http://www.w3.org/XML/1998/namespace" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+]>
+
+<Ontology xmlns="http://www.w3.org/2002/07/owl#" xml:base="http://www.semanticweb.org/ontologies/2012/5/Ontology1339617941597.owl" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:xml="http://www.w3.org/XML/1998/namespace" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" ontologyIRI="http://www.semanticweb.org/ontologies/2012/5/Ontology1339617941597.owl">
+	<Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+	<Prefix name="" IRI="http://www.w3.org/2002/07/owl#"/>
+	<Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#"/>
+	<Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#"/>
+	<Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#"/>
+	<Declaration>
+		<Class IRI="#AQU1"/>
+	</Declaration>
+	<Declaration>
+		<Class IRI="#CriterioDeAceitacao"/>
+	</Declaration>
+	<Declaration>
+		<Class IRI="#EstrategiaDeAquisicao"/>
+	</Declaration>
+	<Declaration>
+		<Class IRI="#MetaDeAquisicao"/>
+	</Declaration>
+	<Declaration>
+		<Class IRI="#NecessidadeDeAquisicao"/>
+	</Declaration>
+	<EquivalentClasses>
+		<Class IRI="#AQU1"/>
+		<ObjectIntersectionOf>
+			<ObjectSomeValuesFrom>
+				<ObjectProperty IRI="#hasresult"/>
+				<Class IRI="#CriterioDeAceitacao"/>
+			</ObjectSomeValuesFrom>
+			<ObjectSomeValuesFrom>
+				<ObjectProperty IRI="#hasresult"/>
+				<Class IRI="#EstrategiaDeAquisicao"/>
+			</ObjectSomeValuesFrom>
+			<ObjectSomeValuesFrom>
+				<ObjectProperty IRI="#hasresult"/>
+				<Class IRI="#MetaDeAquisicao"/>
+			</ObjectSomeValuesFrom>
+			<ObjectSomeValuesFrom>
+				<ObjectProperty IRI="#hasresult"/>
+				<Class IRI="#NecessidadeDeAquisicao"/>
+			</ObjectSomeValuesFrom>
+		</ObjectIntersectionOf>
+	</EquivalentClasses>
+	<SubClassOf>
+		<Class IRI="#AQU1"/>
+		<Class IRI="#Aquisicao"/>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="#CriterioDeAceitacao"/>
+		<ObjectSomeValuesFrom>
+			<ObjectProperty IRI="#hasresult"/>
+			<Class IRI="#AQU1"/>
+		</ObjectSomeValuesFrom>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="#EstrategiaDeAquisicao"/>
+		<ObjectSomeValuesFrom>
+			<ObjectProperty IRI="#hasresult"/>
+			<Class IRI="#AQU1"/>
+		</ObjectSomeValuesFrom>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="#MetaDeAquisicao"/>
+		<ObjectSomeValuesFrom>
+			<ObjectProperty IRI="#hasresult"/>
+			<Class IRI="#AQU1"/>
+		</ObjectSomeValuesFrom>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="#NecessidadeDeAquisicao"/>
+		<ObjectSomeValuesFrom>
+			<ObjectProperty IRI="#hasresult"/>
+			<Class IRI="#AQU1"/>
+		</ObjectSomeValuesFrom>
+	</SubClassOf>
+	<TransitiveObjectProperty>
+		<ObjectProperty IRI="#hasresult"/>
+	</TransitiveObjectProperty>
+	<AnnotationAssertion>
+		<AnnotationProperty IRI="#description"/>
+		<IRI>#AQU1</IRI>
+		<Literal xml:lang="pt" datatypeIRI="&rdf;PlainLiteral">As necessidades de aquisição, as metas, os critérios de aceitação do produto, os tipos e a estratégia de aquisição são definidos.</Literal>
+	</AnnotationAssertion>
+	<AnnotationAssertion>
+		<AnnotationProperty IRI="#identificador"/>
+		<IRI>#AQU1</IRI>
+		<Literal xml:lang="pt" datatypeIRI="&rdf;PlainLiteral">13.1.1.0</Literal>
+	</AnnotationAssertion>
+</Ontology>

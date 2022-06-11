@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
+using System.Xml.Serialization;
+using OwlParser.App;
+using OwlParser.App.Schemas.Bpmn;
 using OwlParser.Models;
 using OwlParser.Scripts;
 
@@ -30,6 +33,18 @@ namespace OwlParser
                 textBox1.Text = openFileDialog1.FileName;
                 ontology = LoadOwlFile.LoadDocument<Ontology>(openFileDialog1.FileName);
                 cbxClasses.Items.AddRange(ontology.GetDeclarationNames());
+
+                var teste = App.XmlReader.ReadFile<App.Schemas.Owl.Ontology>(openFileDialog1.FileName);
+                Parser parser = new();
+                var bpmn = parser.ToBpmn(teste);
+
+                XmlSerializer serializer = new XmlSerializer(typeof(RootDefinitions));
+                using (TextWriter writer = new StreamWriter(@"C:\dev\test.xml"))
+                {
+                    serializer.Serialize(writer, bpmn);
+                }
+
+                
             }
         }
 
