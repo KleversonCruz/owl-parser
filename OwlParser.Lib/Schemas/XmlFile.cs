@@ -1,14 +1,27 @@
-﻿namespace OwlParser.Lib.Schemas
+﻿using System.Text.RegularExpressions;
+
+namespace OwlParser.Lib.Schemas
 {
     public class XmlFile
     {
         public XmlFile(string name, string content)
         {
-            Name = name;
+            this.name = name;
             Content = content;
         }
 
-        public string Name { get; set; }
+        private string name;
+
+        public string Name
+        {
+            get
+            {
+                string withoutSpecialChars = Regex.Replace(name, @"[^0-9a-zA-Z]+", "");
+                return $"{withoutSpecialChars}.xml";
+            }
+            set { name = value; }
+        }
+
         public string Content { get; set; }
     }
 }

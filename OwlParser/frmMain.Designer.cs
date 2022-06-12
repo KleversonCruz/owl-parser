@@ -112,7 +112,7 @@ namespace OwlParser
             this.TxtSaveLocation.Name = "TxtSaveLocation";
             this.TxtSaveLocation.Size = new System.Drawing.Size(684, 27);
             this.TxtSaveLocation.TabIndex = 6;
-            this.TxtSaveLocation.Text = "C:\\dev\\BPMN.xml";
+            this.TxtSaveLocation.Text = "C:\\dev\\OwlParser";
             // 
             // label2
             // 
