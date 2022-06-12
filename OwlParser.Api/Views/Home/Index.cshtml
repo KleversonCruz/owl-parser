@@ -1,0 +1,83 @@
+﻿@model OwlParser.Api.Models.HomeModel;
+
+<main>
+    <div class="container-xl px-4 mt-5">
+        <div class="card mb-4 border-0">
+            <div class="card-body">
+                <div class="justify-content-center">
+                    <div class="text-center">
+                        <h5>Converter arquivo OWL para BPMN</h5>
+                        <p class="mb-4">
+                            Selecione um arquivo OWL para realizar a conversão em BPMN
+                        </p>
+                    </div>
+                </div>
+                <form class="form mb-4" enctype="multipart/form-data" asp-action="Index" method="post">
+
+                    <div class='input-group mb-3'>
+                        <input class='form-control rounded-pill rounded-end'
+                               id='formFile'
+                               name='OwlFile'
+                               type='file'
+                               accept='.xml,.owl' />
+                        <button class='btn btn-primary rounded-pill rounded-start' type='submit'>
+                            Converter
+                        </button>
+                    </div>
+                </form>
+
+                @if (!string.IsNullOrEmpty(Model.ExceptionMessage))
+                {
+                    <div class="text-center">
+                        <div class="alert alert-danger" role="alert">
+                            @Html.DisplayFor(modelItem => Model.ExceptionMessage)
+                        </div>
+                    </div>
+
+                }
+            </div>
+        </div>
+
+        @if (!string.IsNullOrEmpty(Model.BpmnXmlString))
+        {
+            <div class="card mb-4 border-0">
+                <div class="card-body">
+                    <div class="justify-content-center mb-4">
+                        <div class="text-center">
+                            <h5 class="mb-3">XML BPMN gerado</h5>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="mb-3">
+                            <textarea class="form-control" rows="10" id="text-val">@Html.DisplayFor(modelItem => Model.BpmnXmlString)</textarea>
+                        </div>
+                        <div class="mb-3 text-center">
+                            <button class="btn btn-primary rounded-pill" id="dwn-btn">
+                                Download
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</main>
+
+<script>
+     function download(filename, text) {
+         var element = document.createElement('a');
+         element.setAttribute('href', 'data:text/xml;charset=utf-8,' + encodeURIComponent(text));
+         element.setAttribute('download', filename);
+        element.style.display = 'none';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+    }
+
+    document.getElementById("dwn-btn").addEventListener("click", function(){
+        var text = document.getElementById("text-val").value;
+        var filename = "BPMN.xml";
+        download(filename, text);
+    }, false);
+</script>
