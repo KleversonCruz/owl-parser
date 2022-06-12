@@ -4,7 +4,7 @@ WORKDIR /app
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["OwlParser.Api/OwlParser.Api.csproj", "OwlParser.Api/"]
-RUN dotnet restore "Validador.API/Validador.API.csproj"
+RUN dotnet restore "OwlParser.Api/OwlParser.Api.csproj"
 COPY . .
 WORKDIR "/src/OwlParser.Api"
 RUN dotnet build "OwlParser.Api.csproj" -c Release -o /app/build
